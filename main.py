@@ -2,8 +2,6 @@ import requests
 import json
 import pandas as pd
 import streamlit as st
-import time
-
 
 class report_accident():
     def __init__(self):
