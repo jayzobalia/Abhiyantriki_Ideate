@@ -69,25 +69,24 @@ class emergency():
         self.newdf_policeStation = self.newdf_policeStation[
             ['DISTRICT NAME', 'ADDRESS', 'LATITUDE', 'LONGITUDE', 'DISTANCES']].sort_values(by=['DISTANCES']).head(5)
 
-    def loading_locations_FS(self,ADDRESS):
+    def loading_locations_FS(self, ADDRESS):
         xyz = report_accident()
         self.TARGET_LATITUDE, self.TARGET_LONGITUDE = xyz.accept_location(ADDRESS)
         for i in self.df_fireStation['ADDRESS']:
             xx = report_accident()
-            latitude,longitude = xx.accept_location(i)
+            latitude, longitude = xx.accept_location(i)
             self.LATITUDE_FS.append(latitude)
             self.LONGITUDE_FS.append(longitude)
             self.DISTANCES_FS.append(
                 pow((self.TARGET_LATITUDE - latitude), 2) + pow((self.TARGET_LONGITUDE - longitude), 2))
-
 
         self.newdf_fireStation = self.df_fireStation
         self.newdf_fireStation['LATITUDE'] = self.LATITUDE_FS
         self.newdf_fireStation['LONGITUDE'] = self.LONGITUDE_FS
         self.newdf_fireStation['DISTANCES'] = self.DISTANCES_FS
 
-        self.newdf_fireStation = self.newdf_fireStation[['NAME', 'ADDRESS', 'LATITUDE', 'LONGITUDE', 'DISTANCES']].sort_values(by=['DISTANCES']).head(5)
-
+        self.newdf_fireStation = self.newdf_fireStation[
+            ['NAME', 'ADDRESS', 'LATITUDE', 'LONGITUDE', 'DISTANCES']].sort_values(by=['DISTANCES']).head(5)
 
     def routing_PoliceStation(self):
         self.requestBody = {
@@ -95,7 +94,8 @@ class emergency():
             "waypoints": [
                 {
                     "type": "point",
-                    "coordinates": str(self.newdf_policeStation['LONGITUDE'][0]) + ', ' + str(self.newdf_policeStation['LATITUDE'][0])
+                    "coordinates": str(self.newdf_policeStation['LONGITUDE'][0]) + ', ' + str(
+                        self.newdf_policeStation['LATITUDE'][0])
                 },
                 {
                     "type": "point",
@@ -125,7 +125,7 @@ class emergency():
         }
 
         self.response = requests.post(url=self.url, headers=self.headers,
-                                          json=self.requestBody)
+                                      json=self.requestBody)
         return self.response.text
 
 
@@ -145,23 +145,17 @@ with st.form("my_form1"):
     if submitted:
         x = emergency()
         x.loading_loations_PS(address1)
-        dict1,name = x.routing_PoliceStation()
-        dict1_json=json.loads(dict1)
+        dict1, name = x.routing_PoliceStation()
+        dict1_json = json.loads(dict1)
 
         response_name = dict1_json["name"]
-        # response_overview=dict1_json["overview"]
-        # response_length=response_overview["length"]
-        # response_duration=response_overview["duration"]
-        # response_sengments = len(dict1_json["segments"])
-        # response_segment=dict1_json['address']['segments']
-        # response_segment_length = len(response_segment)
-        # text_collection=[]
-        # for i in range(response_segment_length):
-        #     x_temp=response_segment[i]
-        #     text_collection.append(x_temp["text"])
-        st.write("The shortest route the ",name," PD can take to reach the place of emergency is: ", response_name)
-        # st.write("length: ", response_length)
-        # st.write("dur: ", response_duration)
+        response_overview = dict1_json["overview"]
+        response_length = response_overview["length"]
+        response_duration = response_overview["duration"]/60
+
+        st.write("1) The Shortest route the ", name, " PD can take to reach the place of emergency is: ", response_name)
+        st.write("2) The Distance that needs to be covered is: ", response_length, "M")
+        st.write("3) The Time needed to reach the place of Emergency is: ", response_duration,"Min")
 
 
 
@@ -177,4 +171,3 @@ with st.form("my_form2"):
         y.loading_locations_FS(address2)
         dict2 = y.routing_FireStation()
         st.write("address: ", dict2)
-
