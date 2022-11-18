@@ -106,7 +106,7 @@ class emergency():
 
         self.response = requests.post(url=self.url, headers=self.headers,
                                       json=self.requestBody)
-        return self.response.text
+        return self.response.text, self.newdf_policeStation['DISTRICT NAME'][0]
 
     def routing_FireStation(self):
         self.requestBody = {
@@ -145,7 +145,7 @@ with st.form("my_form1"):
     if submitted:
         x = emergency()
         x.loading_loations_PS(address1)
-        dict1 = x.routing_PoliceStation()
+        dict1,name = x.routing_PoliceStation()
         dict1_json=json.loads(dict1)
 
         response_name = dict1_json["name"]
@@ -159,7 +159,7 @@ with st.form("my_form1"):
         # for i in range(response_segment_length):
         #     x_temp=response_segment[i]
         #     text_collection.append(x_temp["text"])
-        st.write("The shortest route the Police can take to reach the place of emergency is: ", response_name)
+        st.write("The shortest route the ",name," PD can take to reach the place of emergency is: ", response_name)
         # st.write("length: ", response_length)
         # st.write("dur: ", response_duration)
 
