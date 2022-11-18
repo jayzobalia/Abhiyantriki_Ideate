@@ -129,11 +129,6 @@ class emergency():
         return self.response.text
 
 
-# ADDRESS = input("Enter the Address (In Chicago City): ")
-# x = emergency()
-# x.loading_loations_PS(ADDRESS)
-# x.routing_PoliceStation()
-
 st.title("Emergency Routing")
 with st.form("my_form1"):
     st.write("POLICE STATION ROUTE")
