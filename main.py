@@ -2,6 +2,7 @@ import requests
 import json
 import pandas as pd
 import streamlit as st
+import time
 
 
 class report_accident():
@@ -159,3 +160,12 @@ with st.form("my_form2"):
         y.loading_locations_FS(address2)
         dict2 = y.routing_FireStation()
         st.write("address: ", dict2)
+
+latest_iteration = st.empty()
+bar = st.progress(0)
+
+for i in range(100):
+  # Update the progress bar with each iteration.
+  latest_iteration.text(f'Iteration {i+1}')
+  bar.progress(i + 1)
+  time.sleep(0.1)
