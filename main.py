@@ -133,6 +133,7 @@ class emergency():
 # x.loading_loations_PS(ADDRESS)
 # x.routing_PoliceStation()
 
+st.title("Emergency Routing")
 with st.form("my_form1"):
     st.write("POLICE STATION ROUTE")
     address1 = st.text_input("Enter Address")
