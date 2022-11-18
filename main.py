@@ -146,7 +146,24 @@ with st.form("my_form1"):
         x = emergency()
         x.loading_loations_PS(address1)
         dict1 = x.routing_PoliceStation()
-        st.write("address: ", dict1)
+        dict1_json=json.loads(dict1)
+
+        response_name = dict1_json["name"]
+        # response_overview=dict1_json["overview"]
+        # response_length=response_overview["length"]
+        # response_duration=response_overview["duration"]
+        # response_sengments = len(dict1_json["segments"])
+        # response_segment=dict1_json['address']['segments']
+        # response_segment_length = len(response_segment)
+        # text_collection=[]
+        # for i in range(response_segment_length):
+        #     x_temp=response_segment[i]
+        #     text_collection.append(x_temp["text"])
+        st.write("The shortest route the Police can take to reach the place of emergency is: ", response_name)
+        # st.write("length: ", response_length)
+        # st.write("dur: ", response_duration)
+
+
 
 with st.form("my_form2"):
     st.write("FIRE STATION ROUTE")
@@ -161,11 +178,3 @@ with st.form("my_form2"):
         dict2 = y.routing_FireStation()
         st.write("address: ", dict2)
 
-latest_iteration = st.empty()
-bar = st.progress(0)
-
-for i in range(100):
-  # Update the progress bar with each iteration.
-  latest_iteration.text(f'Iteration {i+1}')
-  bar.progress(i + 1)
-  time.sleep(0.1)
