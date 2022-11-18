@@ -147,15 +147,25 @@ with st.form("my_form1"):
         x.loading_loations_PS(address1)
         dict1, name = x.routing_PoliceStation()
         dict1_json = json.loads(dict1)
+        response_segments = dict1_json["segments"]
 
         response_name = dict1_json["name"]
         response_overview = dict1_json["overview"]
-        response_length = response_overview["length"]
+        response_length = response_overview["length"]/1000
         response_duration = response_overview["duration"]/60
 
+        response_segment_length = len(dict1_json["segments"])
+        text_collection = []
+
+        for i in range(response_segment_length):
+            temp_x = response_segments[i]
+            text_collection.append(temp_x["text"])
+
         st.write("1) The Shortest route the ", name, " PD can take to reach the place of emergency is: ", response_name)
-        st.write("2) The Distance that needs to be covered is: ", response_length, "M")
-        st.write("3) The Time needed to reach the place of Emergency is: ", response_duration,"Min")
+        st.write("2) Mode of Transport is: Car")
+        st.write("3) The Distance that needs to be covered is: ", response_length, "KM")
+        st.write("4) The Time needed to reach the place of Emergency is: ", response_duration,"Min")
+        st.write("5) Instructions: ",text_collection)
 
 
 
